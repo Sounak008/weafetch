@@ -1,0 +1,76 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            output: weafetch-linux
+          - os: macos-latest
+            output: weafetch-macos
+          - os: windows-latest
+            output: weafetch-windows.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install libcurl (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y libcurl4-openssl-dev
+
+      - name: Build (Linux)
+        if: runner.os == 'Linux'
+        run: gcc main.c api.c cJSON.c -lcurl -o ${{ matrix.output }}
+
+      - name: Install libcurl (macOS)
+        if: runner.os == 'macOS'
+        run: brew install curl
+
+      - name: Build (macOS)
+        if: runner.os == 'macOS'
+        run: gcc main.c api.c cJSON.c -I$(brew --prefix curl)/include -L$(brew --prefix curl)/lib -lcurl -o ${{ matrix.output }}
+
+      - name: Setup MSYS2 + libcurl (Windows)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-curl
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: gcc main.c api.c cJSON.c -lcurl -o ${{ matrix.output }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.output }}
+          path: ${{ matrix.output }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            weafetch-linux/weafetch-linux
+            weafetch-macos/weafetch-macos
+            weafetch-windows.exe/weafetch-windows.exe
