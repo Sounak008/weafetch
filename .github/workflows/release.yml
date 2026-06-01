@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: linux-latest
+          - os: ubuntu-latest
             output: weafetch-linux
           - os: macos-latest
             output: weafetch-macos
@@ -59,7 +59,7 @@ jobs:
 
   release:
     needs: build
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
