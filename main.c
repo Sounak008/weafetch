@@ -92,7 +92,6 @@ int main(int argc, char *argv[]) {
   print_weather_ascii(code);
   printf("Temperature    : %.1f °C\n", temp_c);
   printf("Feels Like     : %.1f °C\n", feelslike_c);
-  printf("Condition      : %s\n", text);
   printf("Humidity       : %d%%\n", humidity);
   printf("Precipitation  : %.1f mm\n", precip_mm);
   printf("Wind Direction : %s\n", wind_dir);
