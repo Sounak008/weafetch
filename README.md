@@ -2,6 +2,9 @@
 Small weather fetch tool made using C.
 It uses the free API from [weatherapi.com](https://weatherapi.com).
 
+<img width="629" height="309" alt="image" src="https://github.com/user-attachments/assets/4306addb-b883-44e6-8046-90f5a6346dbc" />
+
+
 Has been only tested in Fedora Linux as of now.
 
 ---
@@ -20,7 +23,9 @@ Has been only tested in Fedora Linux as of now.
 1. Grab the binary from [github releases](https://github.com/Sounak008/weafetch/releases).
 2. Run 
 
-```./path/to/file -t City_Name```
+  ```bash
+  ./path/to/file -t City_Name
+  ```
 
 
 
@@ -30,12 +35,20 @@ Has been only tested in Fedora Linux as of now.
 
 1. Clone the repo and cd into it:
 
-```git clone git@github.com:Sounak008/weafetch.git```
+  ```bash
+  git clone git@github.com:Sounak008/weafetch.git
+  ```
 
-```cd weafetch```
+  ```bash
+  cd weafetch
+  ```
 
 2. Run the following commands:
 
-```gcc main.c api.c cJSON.c -o weafetch -lcurl```
+```bash
+gcc main.c api.c cJSON.c -o weafetch -lcurl
+```
 
-```./weafetch```
+```bash
+./weafetch
+```
